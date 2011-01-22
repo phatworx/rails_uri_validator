@@ -3,11 +3,11 @@
 require 'active_model'
 require 'uri'
 
-# Validator for email
+# Validator for uri
 class UriValidator < ActiveModel::EachValidator
 
+  # main validator for uri
   def validate_each(record, attribute, value)
-
 
     unless value.blank?
       # pre var
@@ -23,6 +23,11 @@ class UriValidator < ActiveModel::EachValidator
           else
             valid = false unless options[:schemes] == uri.scheme.to_sym
           end
+        end
+
+        # custom
+        if options[:custom].is_a? Proc
+          valid = false unless options[:custom].call(uri)
         end
 
       rescue

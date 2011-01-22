@@ -17,6 +17,10 @@ class ValidateMailtoUri < ValidateUri
   validates :uri, :uri => {:schemes => :mailto}
 end
 
+class ValidateCustomUri < ValidateUri
+  validates :uri, :uri => {:schemes => [:http, :https], :custom => Proc.new { |uri| uri.userinfo == nil }}
+end
+
 class TestRailsUriValidator < Test::Unit::TestCase
   def test_valid_uri
     instance = ValidateDefaultUri.new
@@ -104,6 +108,25 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "tel:+1-816-555-1212",
         "telnet://192.0.2.16:80/",
         "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
+    ].each do |uri|
+      instance.uri = uri
+      assert !instance.valid?, uri
+    end
+  end
+
+  def test_custom
+    instance = ValidateCustomUri.new
+    [
+        "http://example.net",
+        "http://example.net/test"
+    ].each do |uri|
+      instance.uri = uri
+      assert instance.valid?, uri
+    end
+
+    [
+        "http://test@example.net",
+        "http://test:test@example.net/test"
     ].each do |uri|
       instance.uri = uri
       assert !instance.valid?, uri
