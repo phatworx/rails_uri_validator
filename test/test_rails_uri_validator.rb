@@ -25,6 +25,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
   def test_valid_uri
     instance = ValidateDefaultUri.new
     [
+        'test',
         "http://user:pass@www.web.de:80/directory/?querystring#anker",
         "https://user:pass@www.web.de:80/directory/?querystring#anker",
         "http://www.web.de:80/directory/?querystring#anker",
@@ -48,7 +49,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
     ].each do |uri|
       instance.uri = uri
-      assert instance.valid?, uri
+      assert instance.valid?, uri.to_s
     end
   end
 
@@ -66,7 +67,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "http://de.wikipedia.org/wiki/Uniform_Resource_Identifier"
     ].each do |uri|
       instance.uri = uri
-      assert instance.valid?, uri
+      assert instance.valid?, uri.to_s
     end
 
     [
@@ -83,7 +84,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
     ].each do |uri|
       instance.uri = uri
-      assert !instance.valid?, uri
+      assert !instance.valid?, uri.to_s
     end
   end
 
@@ -94,7 +95,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "mailto:test@example.net?subject=Test"
     ].each do |uri|
       instance.uri = uri
-      assert instance.valid?, uri
+      assert instance.valid?, uri.to_s
     end
 
     [
@@ -110,7 +111,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "urn:oasis:names:specification:docbook:dtd:xml:4.1.2"
     ].each do |uri|
       instance.uri = uri
-      assert !instance.valid?, uri
+      assert !instance.valid?, uri.to_s
     end
   end
 
@@ -121,7 +122,7 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "http://example.net/test"
     ].each do |uri|
       instance.uri = uri
-      assert instance.valid?, uri
+      assert instance.valid?, uri.to_s
     end
 
     [
@@ -129,7 +130,19 @@ class TestRailsUriValidator < Test::Unit::TestCase
         "http://test:test@example.net/test"
     ].each do |uri|
       instance.uri = uri
-      assert !instance.valid?, uri
+      assert !instance.valid?, uri.to_s
+    end
+  end
+
+  def test_invalid
+    instance = ValidateDefaultUri.new
+    [
+        1,
+        2.2,
+       '##'
+    ].each do |uri|
+      instance.uri = uri
+      assert !instance.valid?, uri.to_s
     end
   end
 
