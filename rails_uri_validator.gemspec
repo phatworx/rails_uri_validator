@@ -19,12 +19,14 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
     "init.rb",
     "lib/rails_uri_validator.rb",
+    "rails_uri_validator.gemspec",
     "test/helper.rb",
     "test/test_rails_uri_validator.rb"
   ]
