@@ -1,5 +1,7 @@
 = rails_uri_validator
 
+http://travis-ci.org/phatworx/rails_uri_validator.png
+
 == Installation
 Add the following line to your Gemfile
   gem "rails_uri_validator"
